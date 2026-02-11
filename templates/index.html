@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="h4 mb-3">Load a Royal Road fiction</h1>
+          <form method="post" action="{{ url_for('load_fiction') }}">
+            <div class="mb-3">
+              <label for="fiction_url" class="form-label">Fiction URL</label>
+              <input
+                type="url"
+                class="form-control"
+                id="fiction_url"
+                name="fiction_url"
+                placeholder="https://www.royalroad.com/fiction/41656/chaotic-craftsman-worships-the-cube"
+                required
+              />
+              <div class="form-text">
+                This pulls <code>window.chapters</code> from the fiction page HTML and chunks it into groups of ten. It also caches to disk so restarts keep your data.
+              </div>
+            </div>
+
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" value="1" id="refresh" name="refresh" />
+              <label class="form-check-label" for="refresh">
+                Refresh chapters list (ignore cache)
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Load chapters</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="alert alert-secondary mt-3" role="alert">
+        <div class="fw-semibold mb-1">Two compile modes</div>
+        <div class="small">
+          <div>Text mode: Plain-text extraction with bracketed spans turned into <strong>bold</strong>.</div>
+          <div>HTML mode: Preserves basic formatting (italics, breaks, lists, dividers) and also bolds bracketed spans inside text.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

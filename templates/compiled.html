@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
+    <div>
+      <h1 class="h4 mb-1">Compiled chunk</h1>
+      <div class="text-muted">Fiction: {{ fiction_slug }}</div>
+      <div class="text-muted small">Mode: {{ mode|upper }} • Pacing: {{ min_delay }}–{{ max_delay }} seconds between requests</div>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-secondary" href="{{ url_for('show_chunks', fiction_slug=fiction_slug) }}">Back to chunks</a>
+      <a class="btn btn-outline-primary" href="{{ download_href }}">Download as text</a>
+    </div>
+  </div>
+
+  {% for part in parts %}
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">{{ part.title }}</h2>
+
+        {% if mode == "html" %}
+          <div class="chapter-text">{{ part.content_html | safe }}</div>
+        {% else %}
+          <div class="chapter-text">{{ part.text_html | safe }}</div>
+        {% endif %}
+
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

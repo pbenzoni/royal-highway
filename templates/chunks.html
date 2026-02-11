@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
+    <div>
+      <h1 class="h4 mb-1">Chunks for {{ fiction_slug }}</h1>
+      <div class="text-muted">Total chapters: {{ total }}</div>
+    </div>
+    <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Load another</a>
+  </div>
+
+  <div class="list-group">
+    {% for c in chunk_links %}
+      <div class="list-group-item">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <div>
+            <div class="fw-semibold">Chunk {{ c.index + 1 }}</div>
+            <div class="text-muted small">
+              {{ c.first_title }} … {{ c.last_title }} • {{ c.count }} chapters
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-outline-primary" href="{{ c.href_text }}">Compile (Text)</a>
+            <a class="btn btn-sm btn-outline-success" href="{{ c.href_html }}">Compile (HTML)</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
