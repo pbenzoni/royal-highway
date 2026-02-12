@@ -2,12 +2,11 @@
 {% block content %}
   <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
     <div>
-      <h1 class="h4 mb-1">Compiled chunk</h1>
-      <div class="text-muted">Fiction: {{ fiction_slug }}</div>
-      <div class="text-muted small">Mode: {{ mode|upper }} • Pacing: {{ min_delay }}–{{ max_delay }} seconds between requests</div>
+      <h1 class="h4 mb-1">{{part[0].title}} to {{part[-1].title}} </h1>
+      <div class="text-muted small">Mode: {{ mode|upper }}/div>
     </div>
     <div class="d-flex gap-2">
-      <a class="btn btn-outline-secondary" href="{{ url_for('show_chunks', fiction_slug=fiction_slug) }}">Back to chunks</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('show_chunks', fiction_slug=fiction_slug) }}">Back to chapter list</a>
       <a class="btn btn-outline-primary" href="{{ download_href }}">Download as text</a>
     </div>
   </div>
