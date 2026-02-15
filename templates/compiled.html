@@ -11,18 +11,19 @@
     </div>
   </div>
 
-  {% for part in parts %}
+  
     <div class="card mb-3 shadow-sm">
       <div class="card-body">
-        <h2 class="h3">{{ part.title }}</h2>
-
-        {% if mode == "html" %}
-          <div class="chapter-text">{{ part.content_html | safe }}</div>
-        {% else %}
-          <div class="chapter-text">{{ part.text_html | safe }}</div>
-        {% endif %}
-
+        {% for part in parts %}
+          <h2 class="h4">{{ part.title }}</h2>
+          {% if mode == "html" %}
+            <div class="chapter-text">{{ part.content_html | safe }}</div>
+          {% else %}
+            <div class="chapter-text">{{ part.text_html | safe }}</div>
+          {% endif %}
+          <hr/>
+        {% endfor %}
       </div>
     </div>
-  {% endfor %}
+  
 {% endblock %}
