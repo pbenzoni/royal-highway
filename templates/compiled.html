@@ -11,9 +11,10 @@
     </div>
   </div>
 
-  {% for part in parts %}
+  
     <div class="card mb-3 shadow-sm">
       <div class="card-body">
+        {% for part in parts %}
         <h2 class="h3">{{ part.title }}</h2>
 
         {% if mode == "html" %}
@@ -23,6 +24,7 @@
         {% endif %}
 
       </div>
+        {% endfor %}
     </div>
-  {% endfor %}
+
 {% endblock %}
