@@ -2,7 +2,7 @@
 {% block content %}
   <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
     <div>
-      <h1 class="h4 mb-1">{{part[0].title}} to {{part[-1].title}} </h1>
+      <h1 class="h4 mb-1">{{parts[0].title}} to {{parts[-1].title}} </h1>
       <div class="text-muted small">Mode: {{ mode|upper }}/div>
     </div>
     <div class="d-flex gap-2">
@@ -14,7 +14,7 @@
   {% for part in parts %}
     <div class="card mb-3 shadow-sm">
       <div class="card-body">
-        <h2 class="h5">{{ part.title }}</h2>
+        <h2 class="h3">{{ part.title }}</h2>
 
         {% if mode == "html" %}
           <div class="chapter-text">{{ part.content_html | safe }}</div>
