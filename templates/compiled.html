@@ -3,7 +3,7 @@
   <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
     <div>
       <h1 class="h4 mb-1">{{parts[0].title}} to {{parts[-1].title}} </h1>
-      <div class="text-muted small">Mode: {{ mode|upper }}/div>
+      <div class="text-muted small">Mode: {{ mode|upper }}</div>
     </div>
     <div class="d-flex gap-2">
       <a class="btn btn-outline-secondary" href="{{ url_for('show_chunks', fiction_slug=fiction_slug) }}">Back to chapter list</a>
@@ -11,19 +11,18 @@
     </div>
   </div>
 
-  
+  {% for part in parts %}
     <div class="card mb-3 shadow-sm">
       <div class="card-body">
-        {% for part in parts %}
-          <h2 class="h4">{{ part.title }}</h2>
-          {% if mode == "html" %}
-            <div class="chapter-text">{{ part.content_html | safe }}</div>
-          {% else %}
-            <div class="chapter-text">{{ part.text_html | safe }}</div>
-          {% endif %}
-          <hr/>
-        {% endfor %}
+        <h2 class="h3">{{ part.title }}</h2>
+
+        {% if mode == "html" %}
+          <div class="chapter-text">{{ part.content_html | safe }}</div>
+        {% else %}
+          <div class="chapter-text">{{ part.text_html | safe }}</div>
+        {% endif %}
+
       </div>
     </div>
-  
+  {% endfor %}
 {% endblock %}
