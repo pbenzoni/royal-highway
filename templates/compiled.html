@@ -8,6 +8,12 @@
     </div>
     <div class="d-flex gap-2">
       <a class="btn btn-outline-secondary" href="{{ url_for('show_chunks', fiction_slug=fiction_slug) }}">Back to chunks</a>
+      {% if prev_href %}
+        <a class="btn btn-outline-secondary" href="{{ prev_href }}">Previous</a>
+      {% endif %}
+      {% if next_href %}
+        <a class="btn btn-outline-secondary" href="{{ next_href }}">Next</a>
+      {% endif %}
       <a class="btn btn-outline-primary" href="{{ download_href }}">Download as text</a>
     </div>
   </div>

@@ -216,6 +216,65 @@ def apply_bracket_bolding_to_text_nodes(fragment_soup: BeautifulSoup) -> None:
                 node.extract()
 
 
+def strip_single_line_between_brs(
+    fragment_soup: BeautifulSoup,
+    max_chars: int = 200,
+) -> None:
+    """Remove short single-line text that sits *between* two consecutive <br> tags.
+
+    This targets common "one-liner" noise like "Patreon" adverts or short author notes
+    inserted between line breaks.
+
+    Pattern removed (whitespace ignored):
+      <br>  TEXT  <br>
+
+    Only removes when:
+    - There are no other tags in between (just a single text node after trimming)
+    - The trimmed text is non-empty and <= max_chars
+    """
+
+    def _is_br(tag: Tag) -> bool:
+        return isinstance(tag, Tag) and tag.name == "br"
+
+    changed = True
+    while changed:
+        changed = False
+        # Iterate over a snapshot because we'll be mutating the tree.
+        for br in list(fragment_soup.find_all("br")):
+            nxt = br.next_sibling
+
+            # Skip pure whitespace siblings.
+            while isinstance(nxt, NavigableString) and not str(nxt).strip():
+                nxt = nxt.next_sibling
+
+            if not isinstance(nxt, NavigableString):
+                continue
+
+            text = str(nxt).strip()
+            if not text or len(text) > max_chars:
+                continue
+
+            nxt2 = nxt.next_sibling
+            while isinstance(nxt2, NavigableString) and not str(nxt2).strip():
+                nxt2 = nxt2.next_sibling
+
+            if not _is_br(nxt2):
+                continue
+
+            # Remove: <br> [whitespace] TEXT [whitespace] <br>
+            nxt.extract()
+
+            # Also remove any whitespace-only text nodes now sitting between the brs.
+            probe = br.next_sibling
+            while isinstance(probe, NavigableString) and not str(probe).strip():
+                tmp = probe
+                probe = probe.next_sibling
+                tmp.extract()
+
+            changed = True
+            break
+
+
 # ---------- HTML-preserving extraction (sanitized) ----------
 
 _ALLOWED_TAGS = {
@@ -272,6 +331,7 @@ def sanitize_fragment_html(fragment_html: str) -> str:
                 del tag.attrs[attr]
 
     apply_bracket_bolding_to_text_nodes(frag)
+    strip_single_line_between_brs(frag, max_chars=200)
     return frag.decode_contents()
 
 

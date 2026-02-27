@@ -211,6 +211,30 @@ def compile_chunk(fiction_slug: str):
             {"title": title, "text_raw": text_raw, "text_html": text_html, "content_html": content_html}
         )
 
+    # Previous/Next navigation within the currently compiled id list.
+    # (Uses the order provided in the ids= query parameter.)
+    prev_href = None
+    next_href = None
+    if len(chapter_ids) > 1:
+        prev_ids = chapter_ids[:-1]
+        next_ids = chapter_ids[1:]
+        prev_href = url_for(
+            "compile_chunk",
+            fiction_slug=fiction_slug,
+            ids=",".join(str(x) for x in prev_ids),
+            mode=mode,
+            min_delay=min_delay,
+            max_delay=max_delay,
+        )
+        next_href = url_for(
+            "compile_chunk",
+            fiction_slug=fiction_slug,
+            ids=",".join(str(x) for x in next_ids),
+            mode=mode,
+            min_delay=min_delay,
+            max_delay=max_delay,
+        )
+
     if download:
         out_lines: List[str] = []
         for part in compiled_parts:
@@ -234,6 +258,8 @@ def compile_chunk(fiction_slug: str):
         parts=compiled_parts,
         min_delay=min_delay,
         max_delay=max_delay,
+    prev_href=prev_href,
+    next_href=next_href,
         download_href=url_for("compile_chunk", fiction_slug=fiction_slug, ids=ids_raw, mode=mode, download=1),
     )
 
